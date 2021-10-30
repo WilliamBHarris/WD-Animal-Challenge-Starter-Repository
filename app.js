@@ -9,7 +9,9 @@ const controllers = require("./controllers");
 
 app.use(express.json());
 
-app.use("/user", controllers.usercontroller);
+app.use("/user", controllers.userController);
+
+app.use("/create", controllers.userController);
 
 db.authenticate()
   .then(() => db.sync()) // => {force: true}
