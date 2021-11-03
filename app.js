@@ -13,6 +13,8 @@ app.use("/user", controllers.userController);
 
 app.use("/create", controllers.userController);
 
+app.use("/animal", controllers.animalcontroller);
+
 db.authenticate()
   .then(() => db.sync()) // => {force: true}
   .then(() => {
