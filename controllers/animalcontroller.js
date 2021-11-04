@@ -1,28 +1,31 @@
 const express = require("express");
+const validateJWT = require("../middleware/validate-session");
 const router = express.Router();
 const { Animal } = require("../models");
-const validateJWT = require("../middleware/validate-session");
+
 
 router.post("/create", validateJWT, async (req, res) => {
   let { name, legNumber, predator } = req.body.animal;
+  let {userId} = req.user
 
-  await Animal.create({
-    name,
-    legNumber,
-    predator,
-    sessionToken: token
-  });
-
-  res.status(200).json({
-    message: "Logged",
-  });
-
-  res.status(500).json({
-    message: "Not logged",
-  });
+  try {
+      const newAnimal = await Animal.create({
+          name,
+          legNumber,
+          predator,
+          userId: userId
+      });
+      res.status(201).json({
+          message: "Animal Saved",
+      });
+  } catch (err) {
+      res.status(500).json({
+          message: 'No animal data saved'
+      });
+  }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", validateJWT, async (req, res) => {
   try {
     const animals = await Animal.findAll();
     res.status(200).json(animals);
@@ -75,7 +78,7 @@ router.put("/update/:Id", async (req, res) => {
     const update = await Animal.update(updatedAnimal, query);
     res.status(200).json({
       message: "Success",
-      update: updatedAnimal,
+      update: update,
     });
   } catch (err) {
     res.status(500).json({

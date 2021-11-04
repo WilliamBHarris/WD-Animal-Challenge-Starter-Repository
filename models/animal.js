@@ -1,19 +1,23 @@
-const {DataTypes} = require('sequelize');
-const db = require('../db');
+const { DataTypes } = require("sequelize");
+const db = require("../db");
 
-const Animal = db.define('animal', {
+const Animal = db.define("animal", {
   name: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   legNumber: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   predator: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
-  }
+    allowNull: false,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 module.exports = Animal;
